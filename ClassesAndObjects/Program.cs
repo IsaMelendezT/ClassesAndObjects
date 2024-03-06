@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -23,10 +24,34 @@ namespace ClassesAndObjects
                 circles[i] = new Circle(new Point(x, y), radius);
             }
 
+            Console.WriteLine("Point to check if is inside any of the circles: ");
+            Console.WriteLine();
+
+            Console.WriteLine("Please enter the x coordinate of a point to check if it is inside the circle:");
+            double xPoint = double.Parse(Console.ReadLine());
+            Console.WriteLine("Please enter the y coordinate of a point to check if it is inside the circle:");
+            double yPoint = double.Parse(Console.ReadLine());
+
+            Point checkPoint = new Point(xPoint, yPoint);
+
+            Console.WriteLine("Perimetes and Areas of each circle and checked Result: ");
+            Console.WriteLine();
+
             foreach(Circle circle in circles) 
             {
                 Console.WriteLine("Perimeter of circle with origin({0},{1}) and radius {2}is : {3:0.00}",circle.Point.X,circle.Point.Y,circle.Radius,circle.Perimeter());
-                Console.WriteLine("Area of circle with origin({0},{1}) and radius {2}is : {3:0.00}", circle.Point.X, circle.Point.Y, circle.Radius, circle.Perimeter());
+                Console.WriteLine("Area of circle with origin({0},{1}) and radius {2}is : {3:0.00}", circle.Point.X, circle.Point.Y, circle.Radius, circle.Area());
+                Console.WriteLine();
+
+
+                if (circle.IsInside(checkPoint))
+                {
+                    Console.WriteLine("The point ({0},{1}) is inside the circle.", xPoint, yPoint);
+                }
+                else
+                {
+                    Console.WriteLine("The point ({0},{1}) is outside the circle.", xPoint, yPoint);
+                }
                 Console.WriteLine();
             }
 
@@ -102,5 +127,10 @@ namespace ClassesAndObjects
             return Math.PI * this.radius * this.radius;
         }
 
+        public bool IsInside(Point point)
+        {
+            double distance = Math.Sqrt(Math.Pow(point.X - this.Point.X, 2) + Math.Pow(point.Y - this.Point.Y, 2));
+            return distance <= Radius;
+        }
     }
 }
